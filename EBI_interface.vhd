@@ -24,7 +24,6 @@ architecture Behavioral of EBI_interface is
 begin
 
 queue: entity work.fifo_generator_v6_2 Port map (
-    rst => reset,
     wr_clk => not write_enable,
     rd_clk => clk,
     din => data_in,
@@ -40,8 +39,9 @@ queue: entity work.fifo_generator_v6_2 Port map (
 
     test: process(clk, valid)
     begin
-		
-        if(rising_edge(clk) and valid = '1' and empty='0') then
+		if (reset = '1') then
+			counter <= (others => '0');
+		elsif(rising_edge(clk) and valid = '1') then
 --            r_led_d5 <= dout(0);
 --				r_led_d4 <= dout(1);
 --				r_led_d2 <= dout(2);
